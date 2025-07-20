@@ -245,6 +245,167 @@ export class Graph {
 
     return components;
   }
+
+  // Helper function to check if graph is a valid binary tree
+  isBinaryTree(): { isValid: boolean; message: string } {
+    // First check if graph has cycles
+    const { hasCycle } = this.hasCycle();
+    if (hasCycle) {
+      return { isValid: false, message: "Graph contains cycles - not a tree" };
+    }
+
+    // Check if each node has at most 2 children (for binary tree)
+    for (let i = 0; i < this.vertices; i++) {
+      const neighbors = this.adjacencyList.get(i)!;
+      if (neighbors.length > 2) {
+        return { isValid: false, message: `Node ${i} has ${neighbors.length} children - not a binary tree` };
+      }
+    }
+
+    // Check if there's exactly one root (node with no incoming edges)
+    const inDegree = new Array(this.vertices).fill(0);
+    for (let i = 0; i < this.vertices; i++) {
+      for (const neighbor of this.adjacencyList.get(i)!) {
+        inDegree[neighbor.node]++;
+      }
+    }
+
+    const roots = inDegree.filter(degree => degree === 0).length;
+    if (roots !== 1) {
+      return { isValid: false, message: `Found ${roots} root nodes - binary tree must have exactly one root` };
+    }
+
+    return { isValid: true, message: "Valid binary tree" };
+  }
+
+  inorderTraversal(): { result: number[]; message: string } {
+    const validation = this.isBinaryTree();
+    if (!validation.isValid) {
+      return { result: [], message: validation.message };
+    }
+
+    // Find root node (node with no incoming edges)
+    const inDegree = new Array(this.vertices).fill(0);
+    for (let i = 0; i < this.vertices; i++) {
+      for (const neighbor of this.adjacencyList.get(i)!) {
+        inDegree[neighbor.node]++;
+      }
+    }
+    const root = inDegree.findIndex(degree => degree === 0);
+
+    const result: number[] = [];
+    
+    const inorderUtil = (node: number) => {
+      const neighbors = this.adjacencyList.get(node)!;
+      
+      // In a binary tree, we need to determine left and right children
+      // Assuming smaller indexed neighbor is left child
+      const sortedNeighbors = neighbors.sort((a, b) => a.node - b.node);
+      
+      // Traverse left subtree
+      if (sortedNeighbors.length > 0) {
+        inorderUtil(sortedNeighbors[0].node);
+      }
+      
+      // Visit root
+      result.push(node);
+      
+      // Traverse right subtree
+      if (sortedNeighbors.length > 1) {
+        inorderUtil(sortedNeighbors[1].node);
+      }
+    };
+
+    if (root !== -1) {
+      inorderUtil(root);
+    }
+
+    return { result, message: "Inorder traversal completed" };
+  }
+
+  preorderTraversal(): { result: number[]; message: string } {
+    const validation = this.isBinaryTree();
+    if (!validation.isValid) {
+      return { result: [], message: validation.message };
+    }
+
+    // Find root node
+    const inDegree = new Array(this.vertices).fill(0);
+    for (let i = 0; i < this.vertices; i++) {
+      for (const neighbor of this.adjacencyList.get(i)!) {
+        inDegree[neighbor.node]++;
+      }
+    }
+    const root = inDegree.findIndex(degree => degree === 0);
+
+    const result: number[] = [];
+    
+    const preorderUtil = (node: number) => {
+      // Visit root first
+      result.push(node);
+      
+      const neighbors = this.adjacencyList.get(node)!;
+      const sortedNeighbors = neighbors.sort((a, b) => a.node - b.node);
+      
+      // Traverse left subtree
+      if (sortedNeighbors.length > 0) {
+        preorderUtil(sortedNeighbors[0].node);
+      }
+      
+      // Traverse right subtree
+      if (sortedNeighbors.length > 1) {
+        preorderUtil(sortedNeighbors[1].node);
+      }
+    };
+
+    if (root !== -1) {
+      preorderUtil(root);
+    }
+
+    return { result, message: "Preorder traversal completed" };
+  }
+
+  postorderTraversal(): { result: number[]; message: string } {
+    const validation = this.isBinaryTree();
+    if (!validation.isValid) {
+      return { result: [], message: validation.message };
+    }
+
+    // Find root node
+    const inDegree = new Array(this.vertices).fill(0);
+    for (let i = 0; i < this.vertices; i++) {
+      for (const neighbor of this.adjacencyList.get(i)!) {
+        inDegree[neighbor.node]++;
+      }
+    }
+    const root = inDegree.findIndex(degree => degree === 0);
+
+    const result: number[] = [];
+    
+    const postorderUtil = (node: number) => {
+      const neighbors = this.adjacencyList.get(node)!;
+      const sortedNeighbors = neighbors.sort((a, b) => a.node - b.node);
+      
+      // Traverse left subtree
+      if (sortedNeighbors.length > 0) {
+        postorderUtil(sortedNeighbors[0].node);
+      }
+      
+      // Traverse right subtree
+      if (sortedNeighbors.length > 1) {
+        postorderUtil(sortedNeighbors[1].node);
+      }
+      
+      // Visit root last
+      result.push(node);
+    };
+
+    if (root !== -1) {
+      postorderUtil(root);
+    }
+
+    return { result, message: "Postorder traversal completed" };
+  }
 }
 
 class PriorityQueue<T> {
