@@ -42,8 +42,8 @@ A modern, interactive web application for creating, visualizing, and analyzing g
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/graph-visualizer.git
-   cd graph-visualizer
+   git clone https://github.com/Abdullahprogramme/Graph-Visualizer
+   cd Graph-Visualizer
    ```
 
 2. **Install dependencies**
