@@ -89,6 +89,33 @@ export default function GraphAlgorithms({ nodes, edges, isUndirected, onHighligh
           output = "Connected Components algorithm requires an undirected graph";
         }
         break;
+      case "inorder":
+        const inorderResult = graph.inorderTraversal();
+        if (inorderResult.result.length > 0) {
+          path = inorderResult.result;
+          output = `Inorder Traversal: ${inorderResult.result.map((i) => nodes[i]).join(" -> ")}`;
+        } else {
+          output = `Cannot perform inorder traversal: ${inorderResult.message}`;
+        }
+        break;
+      case "preorder":
+        const preorderResult = graph.preorderTraversal();
+        if (preorderResult.result.length > 0) {
+          path = preorderResult.result;
+          output = `Preorder Traversal: ${preorderResult.result.map((i) => nodes[i]).join(" -> ")}`;
+        } else {
+          output = `Cannot perform preorder traversal: ${preorderResult.message}`;
+        }
+        break;
+      case "postorder":
+        const postorderResult = graph.postorderTraversal();
+        if (postorderResult.result.length > 0) {
+          path = postorderResult.result;
+          output = `Postorder Traversal: ${postorderResult.result.map((i) => nodes[i]).join(" -> ")}`;
+        } else {
+          output = `Cannot perform postorder traversal: ${postorderResult.message}`;
+        }
+        break;
       default:
         output = "Please select an algorithm";
     }
@@ -115,6 +142,9 @@ export default function GraphAlgorithms({ nodes, edges, isUndirected, onHighligh
               <SelectItem value="prim">Prim&apos;s MST</SelectItem>
               <SelectItem value="kruskal">Kruskal&apos;s MST</SelectItem>
               <SelectItem value="components">Connected Components</SelectItem>
+              <SelectItem value="inorder">Inorder Traversal (Binary Tree)</SelectItem>
+              <SelectItem value="preorder">Preorder Traversal (Binary Tree)</SelectItem>
+              <SelectItem value="postorder">Postorder Traversal (Binary Tree)</SelectItem>
             </SelectContent>
           </Select>
         </div>
