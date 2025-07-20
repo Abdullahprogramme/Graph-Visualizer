@@ -214,7 +214,7 @@ export default function CreatePage() {
             {nodes.length > 0 && (
               <>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Graph Visualization</h3>
+                  <h3 className="text-xl font-semibold text-gray-900">Graph Visualization</h3>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
