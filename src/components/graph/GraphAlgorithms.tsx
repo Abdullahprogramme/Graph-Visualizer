@@ -109,11 +109,11 @@ export default function GraphAlgorithms({ nodes, edges, isUndirected, onHighligh
             <SelectContent>
               <SelectItem value="bfs">BFS (Breadth-First Search)</SelectItem>
               <SelectItem value="dfs">DFS (Depth-First Search)</SelectItem>
-              <SelectItem value="dijkstra">Dijkstra's Shortest Path</SelectItem>
+              <SelectItem value="dijkstra">Dijkstra&apos;s Shortest Path</SelectItem>
               <SelectItem value="topological">Topological Sort</SelectItem>
               <SelectItem value="cycle">Cycle Detection</SelectItem>
-              <SelectItem value="prim">Prim's MST</SelectItem>
-              <SelectItem value="kruskal">Kruskal's MST</SelectItem>
+              <SelectItem value="prim">Prim&apos;s MST</SelectItem>
+              <SelectItem value="kruskal">Kruskal&apos;s MST</SelectItem>
               <SelectItem value="components">Connected Components</SelectItem>
             </SelectContent>
           </Select>
