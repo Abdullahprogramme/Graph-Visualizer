@@ -110,39 +110,103 @@ export class Graph {
     return stack.reverse();
   }
 
-  hasCycle(): { hasCycle: boolean; cycle: number[] } {
-    const visited = new Array(this.vertices).fill(false);
-    const recStack = new Array(this.vertices).fill(false);
-    const parent = new Array(this.vertices).fill(null);
-    let cycle: number[] = [];
+  hasCycle(isUndirected: boolean = true): { hasCycle: boolean; cycle: number[] } {
+    if (isUndirected) {
+      return this.hasCycleUndirected();
+    } else {
+      return this.hasCycleDirected();
+    }
+  }
 
-    const dfsUtil = (vertex: number, par: number | null): boolean => {
+  private hasCycleUndirected(): { hasCycle: boolean; cycle: number[] } {
+    const visited = new Array(this.vertices).fill(false);
+    const parent = new Array(this.vertices).fill(-1);
+
+    const dfsUtil = (vertex: number, par: number): { found: boolean; cycle: number[] } => {
       visited[vertex] = true;
-      recStack[vertex] = true;
 
       for (const neighbor of this.adjacencyList.get(vertex)!) {
         if (!visited[neighbor.node]) {
           parent[neighbor.node] = vertex;
-          if (dfsUtil(neighbor.node, vertex)) return true;
-        } else if (recStack[neighbor.node] && neighbor.node !== par) {
-          // Found a cycle, reconstruct it
-          cycle = [neighbor.node];
+          const result = dfsUtil(neighbor.node, vertex);
+          if (result.found) return result;
+        } else if (neighbor.node !== par) {
+          // Found a back edge - cycle detected
+          // Build cycle path from current vertex back to the neighbor
+          const cycle: number[] = [];
           let current = vertex;
+          
+          // Trace back from current vertex to the neighbor (which creates the cycle)
           while (current !== neighbor.node) {
-            cycle.unshift(parent[current]!);
-            current = parent[current]!;
+            cycle.push(current);
+            current = parent[current];
           }
-          cycle.push(neighbor.node); // Close the cycle
-          return true;
+          
+          // Add the neighbor to complete the cycle
+          cycle.push(neighbor.node);
+          
+          // Reverse to get the cycle in correct order
+          cycle.reverse();
+          
+          // Add the first node again to show the complete cycle
+          cycle.push(cycle[0]);
+          
+          return { found: true, cycle };
         }
       }
-      recStack[vertex] = false;
-      return false;
+      return { found: false, cycle: [] };
     };
 
     for (let i = 0; i < this.vertices; i++) {
       if (!visited[i]) {
-        if (dfsUtil(i, null)) return { hasCycle: true, cycle };
+        const result = dfsUtil(i, -1);
+        if (result.found) {
+          return { hasCycle: true, cycle: result.cycle };
+        }
+      }
+    }
+    return { hasCycle: false, cycle: [] };
+  }
+
+  private hasCycleDirected(): { hasCycle: boolean; cycle: number[] } {
+    const visited = new Array(this.vertices).fill(false);
+    const recStack = new Array(this.vertices).fill(false);
+    const path: number[] = [];
+
+    const dfsUtil = (vertex: number): { found: boolean; cycle: number[] } => {
+      visited[vertex] = true;
+      recStack[vertex] = true;
+      path.push(vertex);
+
+      for (const neighbor of this.adjacencyList.get(vertex)!) {
+        if (!visited[neighbor.node]) {
+          const result = dfsUtil(neighbor.node);
+          if (result.found) return result;
+        } else if (recStack[neighbor.node]) {
+          // Found a back edge - cycle detected
+          // Find the start of the cycle in the current path
+          const cycleStartIndex = path.indexOf(neighbor.node);
+          const cycle = path.slice(cycleStartIndex);
+          
+          // Add the neighbor again to complete the cycle
+          cycle.push(neighbor.node);
+          
+          return { found: true, cycle };
+        }
+      }
+      
+      recStack[vertex] = false;
+      path.pop(); // Remove vertex from path when backtracking
+      return { found: false, cycle: [] };
+    };
+
+    for (let i = 0; i < this.vertices; i++) {
+      if (!visited[i]) {
+        path.length = 0; // Reset path for each component
+        const result = dfsUtil(i);
+        if (result.found) {
+          return { hasCycle: true, cycle: result.cycle };
+        }
       }
     }
     return { hasCycle: false, cycle: [] };
@@ -224,13 +288,27 @@ export class Graph {
     const visited = new Array(this.vertices).fill(false);
     const components: number[][] = [];
 
+    // Build an undirected adjacency list for connected components
+    const undirectedAdjList = new Map<number, Set<number>>();
+    for (let i = 0; i < this.vertices; i++) {
+      undirectedAdjList.set(i, new Set());
+    }
+
+    // Add all edges as bidirectional for connected components analysis
+    for (let i = 0; i < this.vertices; i++) {
+      for (const neighbor of this.adjacencyList.get(i)!) {
+        undirectedAdjList.get(i)!.add(neighbor.node);
+        undirectedAdjList.get(neighbor.node)!.add(i);
+      }
+    }
+
     const dfsUtil = (vertex: number, component: number[]) => {
       visited[vertex] = true;
       component.push(vertex);
 
-      for (const neighbor of this.adjacencyList.get(vertex)!) {
-        if (!visited[neighbor.node]) {
-          dfsUtil(neighbor.node, component);
+      for (const neighbor of undirectedAdjList.get(vertex)!) {
+        if (!visited[neighbor]) {
+          dfsUtil(neighbor, component);
         }
       }
     };
@@ -248,8 +326,8 @@ export class Graph {
 
   // Helper function to check if graph is a valid binary tree
   isBinaryTree(): { isValid: boolean; message: string } {
-    // First check if graph has cycles
-    const { hasCycle } = this.hasCycle();
+    // First check if graph has cycles (binary trees are always directed and acyclic)
+    const { hasCycle } = this.hasCycle(false); // Binary trees are directed
     if (hasCycle) {
       return { isValid: false, message: "Graph contains cycles - not a tree" };
     }
