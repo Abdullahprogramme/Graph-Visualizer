@@ -58,9 +58,15 @@ export default function GraphAlgorithms({ nodes, edges, isUndirected, onHighligh
         output = `Topological Sort: ${path.map((i) => nodes[i]).join(" -> ")}`;
         break;
       case "cycle":
-        const { hasCycle, cycle } = graph.hasCycle();
-        path = cycle;
-        output = hasCycle ? `Cycle Detected: ${cycle.map((i) => nodes[i]).join(" -> ")}` : "Graph is acyclic";
+        const { hasCycle, cycle } = (isUndirected ? graph.hasCycle(true) : graph.hasCycle(false));
+        if (hasCycle && cycle.length > 0) {
+          // Remove duplicate nodes for highlighting (keep unique nodes only)
+          path = [...new Set(cycle)];
+          output = `Cycle Detected: ${cycle.map((i) => nodes[i]).join(" -> ")}`;
+        } else {
+          path = [];
+          output = "Graph is acyclic";
+        }
         break;
       case "prim":
         if (isUndirected) {
@@ -81,13 +87,9 @@ export default function GraphAlgorithms({ nodes, edges, isUndirected, onHighligh
         }
         break;
       case "components":
-        if (isUndirected) {
-          const components = graph.connectedComponents();
-          output = `Connected Components: ${components.map((comp, i) => `Component ${i + 1}: ${comp.map((n) => nodes[n]).join(", ")}`).join("; ")}`;
-          path = components.flat(); // Highlight all nodes
-        } else {
-          output = "Connected Components algorithm requires an undirected graph";
-        }
+        const components = graph.connectedComponents();
+        output = `Connected Components: ${components.map((comp, i) => `Component ${i + 1}: ${comp.map((n) => nodes[n]).join(", ")}`).join("; ")}`;
+        path = components.flat(); // Highlight all nodes
         break;
       case "inorder":
         const inorderResult = graph.inorderTraversal();
