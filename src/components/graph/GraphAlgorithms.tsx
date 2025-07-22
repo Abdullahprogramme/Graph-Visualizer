@@ -58,7 +58,7 @@ export default function GraphAlgorithms({ nodes, edges, isUndirected, onHighligh
         output = `Topological Sort: ${path.map((i) => nodes[i]).join(" -> ")}`;
         break;
       case "cycle":
-        const { hasCycle, cycle } = (isUndirected ? graph.hasCycle(true) : graph.hasCycle(false));
+        const { hasCycle, cycle } = (isUndirected ? graph.hasCycle() : graph.hasCycle(false));
         if (hasCycle && cycle.length > 0) {
           // Remove duplicate nodes for highlighting (keep unique nodes only)
           path = [...new Set(cycle)];
