@@ -2,12 +2,6 @@ import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Mail } from "lucide-react";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 
 export default function Footer() {
     return (
@@ -28,89 +22,59 @@ export default function Footer() {
                     </div>
 
                     {/* Center - Social Navigation */}
-                    <TooltipProvider>
-                        <NavigationMenu>
-                            <NavigationMenuList className="flex items-center space-x-2">
-                                {/* <NavigationMenuItem>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <NavigationMenuLink asChild>
-                                                <Link
-                                                    href="https://www.linkedin.com/in/abdullahtariq78/"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="p-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-all duration-200"
-                                                >
-                                                    <LinkedInLogoIcon className="h-5 w-5" />
-                                                </Link>
-                                            </NavigationMenuLink>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>LinkedIn</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </NavigationMenuItem> */}
+                    <div className="flex items-center space-x-2">
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href="https://github.com/Abdullahprogramme"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-all duration-200"
+                                    >
+                                        <GitHubLogoIcon className="h-5 w-5" />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>GitHub</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
 
-                                <NavigationMenuItem>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <NavigationMenuLink asChild>
-                                                <Link
-                                                    href="https://github.com/Abdullahprogramme"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="p-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-all duration-200"
-                                                >
-                                                    <GitHubLogoIcon className="h-5 w-5" />
-                                                </Link>
-                                            </NavigationMenuLink>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>GitHub</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </NavigationMenuItem>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href="mailto:abdtariq78@gmail.com"
+                                        className="p-2 text-gray-300 hover:text-red-400 hover:bg-gray-700 rounded-lg transition-all duration-200"
+                                    >
+                                        <Mail className="h-5 w-5" />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Email</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
 
-                                <NavigationMenuItem>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <NavigationMenuLink asChild>
-                                                <Link
-                                                    href="mailto:abdtariq78@gmail.com"
-                                                    className="p-2 text-gray-300 hover:text-red-400 hover:bg-gray-700 rounded-lg transition-all duration-200"
-                                                >
-                                                    <Mail className="h-5 w-5" />
-                                                </Link>
-                                            </NavigationMenuLink>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>Email</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </NavigationMenuItem>
-
-                                <NavigationMenuItem>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <NavigationMenuLink asChild>
-                                                <Link
-                                                    href="https://www.linkedin.com/in/abdullahtariq78/"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="p-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-all duration-200"
-                                                >
-                                                    <LinkedInLogoIcon className="h-5 w-5" />
-                                                </Link>
-                                            </NavigationMenuLink>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>LinkedIn</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </NavigationMenuItem>
-                            </NavigationMenuList>
-                        </NavigationMenu>
-                    </TooltipProvider>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href="https://www.linkedin.com/in/abdullahtariq78/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-all duration-200"
+                                    >
+                                        <LinkedInLogoIcon className="h-5 w-5" />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>LinkedIn</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
 
                     {/* Right Side - Copyright (on mobile this will be below) */}
                     <div className="text-sm text-gray-400 order-first sm:order-last">
