@@ -31,7 +31,7 @@ export default function Footer() {
                     <TooltipProvider>
                         <NavigationMenu>
                             <NavigationMenuList className="flex items-center space-x-2">
-                                <NavigationMenuItem>
+                                {/* <NavigationMenuItem>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
                                             <NavigationMenuLink asChild>
@@ -49,7 +49,7 @@ export default function Footer() {
                                             <p>LinkedIn</p>
                                         </TooltipContent>
                                     </Tooltip>
-                                </NavigationMenuItem>
+                                </NavigationMenuItem> */}
 
                                 <NavigationMenuItem>
                                     <Tooltip>
@@ -85,6 +85,26 @@ export default function Footer() {
                                         </TooltipTrigger>
                                         <TooltipContent>
                                             <p>Email</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </NavigationMenuItem>
+
+                                <NavigationMenuItem>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <NavigationMenuLink asChild>
+                                                <Link
+                                                    href="https://www.linkedin.com/in/abdullahtariq78/"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="p-2 text-gray-300 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-all duration-200"
+                                                >
+                                                    <LinkedInLogoIcon className="h-5 w-5" />
+                                                </Link>
+                                            </NavigationMenuLink>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>LinkedIn</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </NavigationMenuItem>
