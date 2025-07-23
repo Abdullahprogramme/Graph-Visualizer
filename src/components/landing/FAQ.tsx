@@ -2,6 +2,7 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function FAQ() {
   const faqs = [
@@ -16,6 +17,15 @@ export default function FAQ() {
     {
       question: "Is it suitable for learning algorithms?",
       answer: "Absolutely. You can run BFS, DFS, and see them colour coded to understand how they work on graphs.",
+    },
+    {
+      question: "I don't understand the algorithms or the graph concepts, can I get help?",
+      answer: (
+        <>
+          Yes, you can refer to the documentation available at this link:{" "}
+          <Link href="/details" className="text-blue-400 hover:text-blue-300 transition-colors font-medium underline decoration-transparent hover:decoration-current">Graph Theory Guide</Link>
+        </>
+      ),
     },
   ];
 
