@@ -4,11 +4,34 @@ import { useEffect, useRef } from "react";
 import cytoscape from "cytoscape";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+interface CytoscapeElement {
+  data: {
+    id: string;
+    source?: string;
+    target?: string;
+    weight?: string;
+  };
+}
+
+interface CytoscapeLayout {
+  name: string;
+  radius?: number;
+  padding?: number;
+  directed?: boolean;
+  roots?: string;
+  spacingFactor?: number;
+}
+
+interface CytoscapeStyle {
+  selector: string;
+  style: Record<string, unknown>;
+}
+
 interface GraphVisualizationProps {
   id: string;
-  elements: any[];
-  layout?: any;
-  style?: any[];
+  elements: CytoscapeElement[];
+  layout?: CytoscapeLayout;
+  style?: CytoscapeStyle[];
 }
 
 function GraphVisualization({ id, elements, layout, style }: GraphVisualizationProps) {
