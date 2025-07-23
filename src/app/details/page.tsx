@@ -135,7 +135,7 @@ export default function DetailsPage() {
             </h3>
             <p className="text-white/80 mb-6 max-w-2xl mx-auto">
               Now that you understand the theory, try creating and analyzing your own graphs 
-              with our interactive visualizer.
+              with my interactive visualizer.
             </p>
             <Link
               href="/create"
