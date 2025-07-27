@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import GraphCanvas from "@/components/graph/GraphCanvas";
 import GraphForm from "@/components/graph/GraphForm";
 import GraphAlgorithms from "@/components/graph/GraphAlgorithms";
+import UploadGraph from "@/components/graph/UploadGraph";
 import { Graph } from "@/lib/graph";
 import cytoscape from "cytoscape";
 
@@ -197,7 +198,10 @@ export default function CreatePage() {
         >
           {/* Form Section (30%) */}
           <div className="w-full lg:w-[30%] bg-white/95 rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Create Your Graph</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-gray-900">Create Your Graph</h2>
+              <UploadGraph onGraphUpload={handleCreate} />
+            </div>
             <GraphForm onCreate={handleCreate} />
             {nodes.length > 0 && (
               <GraphAlgorithms
