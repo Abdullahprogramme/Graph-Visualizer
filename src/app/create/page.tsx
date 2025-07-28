@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home, Download, CheckCircle } from "lucide-react";
+import { ArrowLeft, Home, Download, CheckCircle, ArrowBigDownDash } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
@@ -41,6 +41,24 @@ export default function CreatePage() {
       icon: <CheckCircle className="h-4 w-4" />,
       duration: 3000,
     });
+  };
+
+  const handleSaveFile = () => {
+    if (nodes.length === 0) {
+      toast.error("No graph to save", { duration: 2000 });
+      return;
+    }
+
+    const content = `${nodes.length}\n${nodes.join('\n')}\n${edges.length}\n${edges.map(e => e.join(' ')).join('\n')}\n${isUndirected ? 'UD' : 'D'}`;
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "graph.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleSaveImage = () => {
@@ -219,22 +237,43 @@ export default function CreatePage() {
               <>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-semibold text-gray-900">Graph Visualization</h3>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          onClick={handleSaveImage}
-                          disabled={nodes.length === 0}
-                          className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 shadow-md disabled:opacity-50"
-                        >
-                          <Download className="h-5 w-5" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Download Graph as PNG</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <div className="flex items-center gap-2 justify-end w-full">
+                    <TooltipProvider>
+                      
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={handleSaveFile}
+                            disabled={nodes.length === 0}
+                            className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 shadow-md disabled:opacity-50"
+                          >
+                            {/* Use FileText icon for .txt download */}
+                            <Download className="h-5 w-5" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Download Graph as .txt file</p>
+                        </TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={handleSaveImage}
+                            disabled={nodes.length === 0}
+                            className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-2 shadow-md disabled:opacity-50"
+                          >
+                            {/* Use Image icon for PNG download */}
+                            <ArrowBigDownDash className="h-5 w-5" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Download Graph as PNG</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                    </TooltipProvider>
+                  </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-6">
                   <GraphCanvas
