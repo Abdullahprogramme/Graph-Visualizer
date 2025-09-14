@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GraphViz",
+  title: "GraphViz | Create, Visualize, and Learn",
   description: "A graph visualizer for educational purposes",
   icons: {
     icon: [
