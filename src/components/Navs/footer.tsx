@@ -17,7 +17,7 @@ export default function Footer() {
                             rel="noopener noreferrer"
                             className="text-blue-400 hover:text-blue-300 transition-colors font-medium underline decoration-transparent hover:decoration-current"
                         >
-                            Abdullah. T
+                            Abdullah Tariq
                         </Link>
                     </div>
 
