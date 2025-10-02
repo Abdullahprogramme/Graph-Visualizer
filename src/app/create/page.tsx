@@ -19,13 +19,15 @@ export default function CreatePage() {
   const [edges, setEdges] = useState<[string, string][]>([]);
   const [nodes, setNodes] = useState<string[]>([]);
   const [isUndirected, setIsUndirected] = useState(true);
+  const [isGraph, setIsGraph] = useState(true);
   const [highlightPath, setHighlightPath] = useState<number[]>([]);
   const cyRef = useRef<cytoscape.Core | null>(null);
 
-  const handleCreate = (nodes: string[], edges: [string, string][], isUndirected: boolean) => {
+  const handleCreate = (nodes: string[], edges: [string, string][], isUndirected: boolean, isGraph: boolean) => {
     setNodes(nodes);
     setEdges(edges);
     setIsUndirected(isUndirected);
+    setIsGraph(isGraph);
     setHighlightPath([]); // Reset highlight when graph changes
 
     const graph = new Graph(nodes.length);
@@ -280,6 +282,7 @@ export default function CreatePage() {
                     nodes={nodes}
                     edges={edges}
                     isUndirected={isUndirected}
+                    isGraph={isGraph}
                     cyRef={cyRef}
                     highlightPath={highlightPath}
                   />
