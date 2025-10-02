@@ -13,9 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
-  onCreate: (nodes: string[], edges: [string, string][], isUndirected: boolean) => void;
+  onCreate: (nodes: string[], edges: [string, string][], isUndirected: boolean, isGraph: boolean) => void;
 };
 
 export default function GraphForm({ onCreate }: Props) {
@@ -23,6 +24,7 @@ export default function GraphForm({ onCreate }: Props) {
   const [nodeNames, setNodeNames] = useState<string[]>(["A", "B"]);
   const [edges, setEdges] = useState<[string, string][]>([]);
   const [isUndirected, setIsUndirected] = useState(true);
+  const [isGraph, setIsGraph] = useState(true);
 
   const handleNumNodesChange = (value: string) => {
     const num = Math.min(Number(value), 20);
@@ -70,7 +72,7 @@ export default function GraphForm({ onCreate }: Props) {
 
   const handleSubmit = () => {
     if (nodeNames.every((name) => name.trim() !== "")) {
-      onCreate(nodeNames, edges, isUndirected);
+      onCreate(nodeNames, edges, isUndirected, isGraph);
     }
   };
 
@@ -117,6 +119,19 @@ export default function GraphForm({ onCreate }: Props) {
           />
           <Label htmlFor="undirected" className="text-sm font-semibold text-gray-800 cursor-pointer">
             Undirected Graph
+          </Label>
+        </div>
+
+        {/* Graph Type Switch */}
+        <div className="flex items-center space-x-3">
+          <Checkbox
+            id="graph"
+            checked={!isGraph}
+            onCheckedChange={(checked) => setIsGraph(!checked)}
+            className="data-[state=checked]:bg-blue-600"
+          />
+          <Label htmlFor="graph" className="text-sm font-semibold text-gray-800 cursor-pointer">
+            Tree
           </Label>
         </div>
 
@@ -191,6 +206,7 @@ export default function GraphForm({ onCreate }: Props) {
             setNodeNames(["A", "B"]);
             setEdges([]);
             setIsUndirected(true);
+            setIsGraph(true);
           }}
           variant="outline"
           className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md py-2 font-semibold"

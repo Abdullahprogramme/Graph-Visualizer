@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 
 interface UploadGraphProps {
-  onGraphUpload: (nodes: string[], edges: [string, string][], isUndirected: boolean) => void;
+  onGraphUpload: (nodes: string[], edges: [string, string][], isUndirected: boolean, isGraph: boolean) => void;
 }
 
 export default function UploadGraph({ onGraphUpload }: UploadGraphProps) {
@@ -79,21 +79,33 @@ export default function UploadGraph({ onGraphUpload }: UploadGraphProps) {
           edges.push([source, target]);
         }
 
-        // Parse graph type (last line)
-        const graphTypeLine = edgeStartLine + numEdges + 1;
-        if (graphTypeLine >= lines.length) {
-          throw new Error("Missing graph type line (UD for undirected or D for directed)");
+        // Parse graph direction (second to last line)
+        const graphDirectionLine = edgeStartLine + numEdges + 1;
+        if (graphDirectionLine >= lines.length) {
+          throw new Error("Missing graph direction line (UD for undirected or D for directed)");
         }
         
-        const graphType = lines[graphTypeLine].toUpperCase();
-        if (graphType !== 'UD' && graphType !== 'D') {
-          throw new Error("Graph type must be 'UD' (undirected) or 'D' (directed)");
+        const graphDirection = lines[graphDirectionLine].toUpperCase();
+        if (graphDirection !== 'UD' && graphDirection !== 'D') {
+          throw new Error("Graph direction must be 'UD' (undirected) or 'D' (directed)");
         }
         
-        const isUndirected = graphType === 'UD';
+        // Parse structure type (last line)
+        const structureTypeLine = edgeStartLine + numEdges + 2;
+        if (structureTypeLine >= lines.length) {
+          throw new Error("Missing structure type line (tree or graph)");
+        }
+        
+        const structureType = lines[structureTypeLine].toLowerCase();
+        if (structureType !== 'tree' && structureType !== 'graph') {
+          throw new Error("Structure type must be 'tree' or 'graph'");
+        }
+        
+        const isUndirected = graphDirection === 'UD';
+        const isGraph = structureType === 'graph';
 
         // Call the handler with parsed data
-        onGraphUpload(nodes, edges, isUndirected);
+        onGraphUpload(nodes, edges, isUndirected, isGraph);
         
         // Close popover and show success
         setIsOpen(false);
@@ -133,7 +145,8 @@ D
 A B
 B C
 C A
-UD`;
+UD
+graph`;
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -198,7 +211,8 @@ UD`;
               <p><strong>Lines 2-5:</strong> Node names (one per line)</p>
               <p><strong>Line 6:</strong> Number of edges</p>
               <p><strong>Lines 7-9:</strong> Edges (source target, space-separated)</p>
-              <p><strong>Last line:</strong> Graph type (UD = undirected, D = directed)</p>
+              <p><strong>Line 10:</strong> Graph direction (UD = undirected, D = directed)</p>
+              <p><strong>Line 11:</strong> Structure type (tree or graph)</p>
             </div>
           </div>
         </div>
